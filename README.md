@@ -75,7 +75,7 @@ SOFTWARE.
 ```
 
 ### Contact Me
-If you have any questions about this repo, you may create an issue or just hit me that questions on twitter.
+If you have any questions about this repo, you may create an issue or just hit me that questions on twitter. <br>
 Author: **Mustafa ÇALAP** <br>
 Website: [**calap.co**](https://calap.co) <br>
 Twitter: [**mustafacalap**](https://twitter.com/mustafacalap)

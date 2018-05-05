@@ -54,6 +54,12 @@ if [ ! -f /usr/local/share/Eternal_Scanner/vuln.txt ]; then
     ./escan -i $ip1.$ip2.0.0/16
     cd ../..
     echo "";
+    if [ ! -f /usr/local/share/Eternal_Scanner/vuln.txt ]; then
+        echo ""
+        echo "There is no IP addresses found"
+        echo "Script exits due to no IP address"
+        exit 1;
+    fi
     echo "Parsing IPs...";
     python3 "$assetsdir"ipparser.py &
 

@@ -64,13 +64,31 @@ if [ ! -f /usr/local/share/Eternal_Scanner/vuln.txt ]; then
     python3 "$assetsdir"ipparser.py &
 
 else
-    echo "No scanner needed due to the file ";
-    echo "/usr/local/share/Eternal_Scanner/vuln.txt";
-    echo "vuln.txt FOUND";
-    python3 "$assetsdir"ipparser.py &
-    echo "";
-    echo "Parsing IPs...";
-
+    echo "vuln.txt found"
+    read -p 'Do you want to re-scan the network? (Y/n): ' check;
+    if [ "$check" == "y" ] || [ "$check" == "yes" ] || [ "$check" == "Y" ]; then
+        echo "";
+        echo "Re-scanning please wait...";
+        echo "";
+        rm /usr/local/share/Eternal_Scanner/vuln.txt
+        cd assets/eternal_scanner
+        ./escan -i $ip1.$ip2.0.0/16
+        cd ../..
+        echo "";
+        if [ ! -f /usr/local/share/Eternal_Scanner/vuln.txt ]; then
+            echo ""
+            echo "There is no IP addresses found"
+            echo "Script exits due to no IP address"
+            exit 1;
+        fi
+        echo "Parsing IPs...";
+        python3 "$assetsdir"ipparser.py &
+    else
+        echo "Using existing IP addresses in vuln.txt";
+        echo "";
+        echo "Parsing IPs...";
+        python3 "$assetsdir"ipparser.py &
+    fi
 fi
 
 # sets metasploit reverse_tcp port, by default 31313

@@ -39,6 +39,10 @@ clearev
 background
 ```
 
+## Acknowledgement
+
+* Thank [**peterpt**](https://github.com/peterpt/) for the *Eternal_Scanner* [[MIT License]](https://github.com/peterpt/eternal_scanner/blob/master/LICENSE) tool.
+
 
 ## License
 ```

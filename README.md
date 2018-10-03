@@ -78,4 +78,4 @@ Twitter: [**mustafacalap**](https://twitter.com/mustafacalap)
 ### Donate Me
 [![forthebadge](https://forthebadge.com/images/badges/fuck-it-ship-it.svg)](https://forthebadge.com)
 - Bitcoin : 1MUSTkECBR1yr6Jbd5QjT9EXJXGgDaZieJ <br />
-<img src="https://rlv.zcache.com/bitcoin_accepted_here_sticker-r148616b487084a369d4c15bf39055043_v9i40_8byvr_324.jpg" width="200px" height="200px">[![image](https://blog.calap.co/wp-content/uploads/2017/11/1MUST.png)](https://blog.calap.co/destek-olun)
+<img src="https://rlv.zcache.com/bitcoin_accepted_here_sticker-r148616b487084a369d4c15bf39055043_v9i40_8byvr_324.jpg" width="200px" height="200px">[![BTC Wallet](https://calap.co/images/BTC-wallet.png)](https://calap.co/blog/support-me/)

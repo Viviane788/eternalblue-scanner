@@ -25,9 +25,9 @@ The **eternalscanner** repo is made for educational purposes only. It uses `eter
 
 ## Usage
 [![forthebadge](https://forthebadge.com/images/badges/oooo-kill-em.svg)](https://forthebadge.com)
-- $ `git clone git@github.com:nsa/eternalblue-scanner.git && cd eternalblue-scanner`
-- $ `chmod +x eternalbash`
-- $ `sudo bash eternalbash`
+- `git clone git@github.com:nsa/eternalblue-scanner.git && cd eternalblue-scanner`
+- `chmod +x eternalbash`
+- `sudo bash eternalbash`
 
 If any sessions were opened this scripts automatically runs the following **meterpreter** commands from the *`assets/nsa.rc`* file. If you don't want to use following commands, you can just simply change the commands from that **`nsa.rc`** file.
 
